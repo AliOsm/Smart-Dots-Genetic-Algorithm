@@ -16,7 +16,7 @@ private:
 	int alive;
 	int reachedTarget;
 	int minimumCurrent;
-	double fitnessSum;
+	int fitnessSum;
 	Position target;
 	std::vector<Dot> dots;
 	std::vector<Obstacle> obstacles;
@@ -37,8 +37,8 @@ private:
 	Dot selectParent() {
 		std::uniform_real_distribution<double> urd(0.0, fitnessSum);
 		std::default_random_engine dre(std::time(NULL));
-		double rnd = urd(dre);
-		double currentSum = 0;
+		int rnd = rand() % fitnessSum;
+		int currentSum = 0;
 
 		for(int i = 0; i < dots.size(); ++i) {
 			currentSum += dots[i].getFitness();
@@ -49,14 +49,13 @@ private:
 	}
 
 	Dot getBestDot() {
-		double bestFitness = 0;
-		double bestIndex;
-		for(int i = 0; i < dots.size(); ++i) {
+		int bestFitness = 0;
+		int bestIndex;
+		for(int i = 0; i < dots.size(); ++i)
 			if(dots[i].getFitness() > bestFitness) {
 				bestFitness = dots[i].getFitness();
 				bestIndex = i;
 			}
-		}
 
 		if(dots[bestIndex].isReachedTarget())
 			minimumCurrent = std::min(minimumCurrent, dots[bestIndex].getCurrent() + 25);
@@ -139,7 +138,7 @@ public:
 		calculateFitnessSum();
 		
 		std::vector<Dot> newDots;
-		newDots.push_back(getBestDot().reset());
+		newDots.push_back(getBestDot().clone());
 		for(int i = 1; i < dots.size(); ++i) {
 			Dot parent = selectParent();
 			newDots.push_back(parent.clone());
@@ -150,8 +149,9 @@ public:
 	}
 
 	void mutation() {
-		for(int i = 0; i < dots.size(); ++i)
+		for(int i = 1; i < dots.size(); ++i)
 			dots[i].mutate();
+		random_shuffle(dots.begin(), dots.end());
 	}
 };
 

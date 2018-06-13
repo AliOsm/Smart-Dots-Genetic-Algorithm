@@ -16,7 +16,7 @@ private:
 	bool reachedTarget;
 	int width;
 	int height;
-	double fitness;
+	int fitness;
 	Position position;
 	Position target;
 	Brain brain;
@@ -56,7 +56,7 @@ public:
 		return brain.getCurrent();
 	}
 
-	double getFitness() {
+	int getFitness() {
 		return fitness;
 	}
 
@@ -66,15 +66,6 @@ public:
 
 	void kill() {
 		dead = true;
-	}
-
-	Dot reset() {
-		dead = false;
-		reachedTarget = false;
-		fitness = 0;
-		position = Position(height - Dot::factor, width / 2);
-		brain.resetCurrent();
-		return *this;
 	}
 
 	void move() {
@@ -88,8 +79,11 @@ public:
 			position.x += dx[current];
 			position.y += dy[current];
 
-			if(outOfRange())
+			if(outOfRange()) {
+				position.x -= dx[current];
+				position.y -= dy[current];
 				dead = true;
+			}
 
 			if(position.euclideanDistance(target) < 2.0)
 				reachedTarget = true;
@@ -98,13 +92,10 @@ public:
 
 	void calculateFitness() {
 		if(reachedTarget) {
-			fitness = 1.0 / 16.0 + 10000.0 / (brain.getCurrent() * brain.getCurrent());
+			fitness = 10000 / brain.getCurrent();
 		} else {
 			double distance = position.euclideanDistance(target);
-			if(distance == 0.0)
-				fitness = 1.0;
-			else
-				fitness = 1.0 / (distance * distance);
+			fitness = 100 / (distance * distance);
 		}
 	}
 
@@ -121,10 +112,8 @@ public:
 	}
 
 	void mutate() {
-		if(reachedTarget)
-			brain.mutate(0.05);
-		else
-			brain.mutate(0.1);
+		if(!reachedTarget)
+			brain.mutate(10);
 	}
 };
 

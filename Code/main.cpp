@@ -17,11 +17,16 @@ int main() {
 	std::vector<Obstacle> obstacles;
 
 	// One obstable
-	// obstacles.push_back(Obstacle(Position(9, 10), 10, 2));
+	// obstacles.push_back(Obstacle(Position(9, 7), 17, 2));
 
 	// Two obstacles
-	obstacles.push_back(Obstacle(Position(7, 0), 16, 2));
-	obstacles.push_back(Obstacle(Position(13, 15), 16, 2));
+	// obstacles.push_back(Obstacle(Position(7, 0), 16, 2));
+	// obstacles.push_back(Obstacle(Position(13, 15), 16, 2));
+
+	// Three obstacles
+	obstacles.push_back(Obstacle(Position(5, 5), 8, 6));
+	obstacles.push_back(Obstacle(Position(5, 18), 8, 6));
+	obstacles.push_back(Obstacle(Position(12, 11), 9, 2));
 
 	Position target(2, width / 2);
   Population population(1000, width, height, 100, target, obstacles);

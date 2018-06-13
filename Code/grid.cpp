@@ -34,7 +34,7 @@ public:
 	void draw(Population population) {
 		std::printf("Generation #%d\n", population.getGeneration());
 		std::printf("Number of alive dots: %d\n", population.getAlive());
-		std::printf("Number of dead  dots: %d\n", population.getSize() - population.getAlive());
+		std::printf("Number of dead  dots: %d\n", population.getSize() - population.getAlive() - population.getReachedTarget());
 		std::printf("Number of dots reached the target: %d\n", population.getReachedTarget());
 		std::putchar('+');
 		for(int i = 0; i < width; ++i)

@@ -42,12 +42,10 @@ public:
 	}
 
 	void mutate(double mutationRate) {
-		std::uniform_real_distribution<double> urd(0.0, 1.0);
-		std::default_random_engine dre(std::time(NULL));
-		double rnd;
+		int rnd;
 
 		for(int i = 0; i < instructions.size(); ++i) {
-			rnd = urd(dre);
+			rnd = rand() % 100;
 			if(rnd < mutationRate) {
 				if(i == 0)
 					instructions[i] = rand() % mod;
